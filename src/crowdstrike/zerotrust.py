@@ -4,7 +4,7 @@
 
 # Constants
 CLIENT_ID = 'd09973764f7946dc9f1b40cebbac1f76'
-CLIENT_SECRET = 'FbMYxe9GgprDTNvUhS3075Zi1HtfI2sQ46dWE8jw'
+CLIENT_SECRET = ''
 BASE_URL = 'https://api.us-2.crowdstrike.com'
 
 #Import necessary libraries from falconpy

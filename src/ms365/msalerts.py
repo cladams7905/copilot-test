@@ -5,7 +5,7 @@ import requests
 # Constants
 TENANT_ID = '08ccf1d4-a04c-4f46-8a71-ddd188f2c16b'
 CLIENT_ID = 'a6276dfd-6363-40c9-87f3-6895a2b9683e'
-CLIENT_SECRET = 'Nhd8Q~~UvcdsK0eG2AlHNLZ5u2qToy3Mc0.pha8_'
+CLIENT_SECRET = ''
 SCOPE = 'https://api.securitycenter.microsoft.com/.default'
 TOKEN_URL = 'https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token'
 

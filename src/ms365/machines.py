@@ -3,7 +3,7 @@ import requests
 
 tenant_id = "08ccf1d4-a04c-4f46-8a71-ddd188f2c16b"
 client_id = "a6276dfd-6363-40c9-87f3-6895a2b9683e"
-client_secret = "Nhd8Q~~UvcdsK0eG2AlHNLZ5u2qToy3Mc0.pha8_"
+client_secret = ""
 scope = "https://api.securitycenter.microsoft.com/.default"
 token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
 

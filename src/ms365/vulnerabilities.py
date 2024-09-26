@@ -8,7 +8,7 @@ import requests
 data = {
     'grant_type': 'client_credentials',
     'client_id': 'a6276dfd-6363-40c9-87f3-6895a2b9683e',
-    'client_secret': 'Nhd8Q~~UvcdsK0eG2AlHNLZ5u2qToy3Mc0.pha8_',
+    'client_secret': '',
     'scope': 'https://api.securitycenter.microsoft.com/.default'
 }
 
