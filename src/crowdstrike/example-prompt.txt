@@ -1,0 +1,17 @@
+# Use falconpy Incidents api library to get a list of all incidents from the past month.
+# 1. import the necessary library from falconpy.
+# 2. Query the CrowdStrike Falcon API for incident data. Call the query_incidents method to get all incidents from the past month.
+# 3. Inside the method, pass in the last_behavior and first_behavior filters and sort the results in descending order.
+
+# Constants
+CLIENT_ID = 'd09973764f7946dc9f1b40cebbac1f76'
+CLIENT_SECRET = 'FbMYxe9GgprDTNvUhS3075Zi1HtfI2sQ46dWE8jw'
+BASE_URL = 'https://api.us-2.crowdstrike.com'
+
+#Import necessary libraries from falconpy
+
+# fetch_data function to return response from CrowdStrike Falcon API
+
+# Main function
+
+# call main function

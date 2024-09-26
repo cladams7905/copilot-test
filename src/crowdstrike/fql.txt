@@ -1,0 +1,183 @@
+Falcon Query Language (FQL)
+Documentation Version Page Updated
+
+Many of the CrowdStrike Falcon API endpoints support the use of Falcon Query Language (FQL) syntax to select and sort records or filter results.
+
+Standard FQL expression syntax follows the pattern: <property>:[operator]<value> when filtering or selecting records.
+
+Standard syntax for a FQL sort expression is: sort:<property>.<direction>.
+
+Note: Available FQL filters and their syntax may vary between API service collection.
+
+Properties
+Data types and restrictions
+Operators
+Filtering with FQL
+String syntax
+Date syntax
+Boolean syntax
+Integer syntax
+Multiple conditions
+Complex expressions
+Passing the filter keyword
+Sorting with FQL
+WARNING
+
+client_id and client_secret are keyword arguments that contain your CrowdStrike API credentials. Please note that all examples below do not hard code these values. (These values are ingested as strings.)
+
+CrowdStrike does NOT recommend hard coding API credentials or customer identifiers within source code.
+
+Properties
+Properties are the elements within CrowdStrike Falcon data that you use to filter, select and sort. Properties always contain only alphanumeric characters or underscores (_). The first character in a property is always a letter, and properties are always considered lowercase. (Uppercase submissions are accepted and converted.) Some names for complex properties are separated by periods, such as author.name or posts.count.
+
+Data types and restrictions
+FQL syntax is typically case sensitive for both property keys and values. Most properties allowed within a FQL statement are either boolean, integer, string or null data types. A FQL statement can have a maximum of 20 properties defined.
+
+Operators
+By default, an expression passed within a FQL statement's operator is equal to. As an example, platform_name:'windows' would filter on hosts where the attribute platform_name is equal to windows.
+
+FQL supports the following operators, although not all may make sense to the query you are trying to perform.
+
+Operator	Meaning
+!	Not equal to
+>	Greater than
+>=	Greater than or equal to
+<	Less than
+<=	Less than or equal to
+~	Text match. Tokenizes the string, ignoring spaces, case, and punctuation.
+!~	Does not text match. Tokenizes the string, ignoring spaces, case, and punctuation.
+*	Wildcard matching. Matches one or more characters
+Using FQL in a filter
+Most API operations that are basic search queries support the filter parameter. Syntax for using this parameter is specific depending on the data type.
+
+Usage example
+This example will retrieve the first AID returned for any host with a hostname property starting with our search string.
+
+
+from falconpy.hosts import Hosts
+
+falcon = Hosts(client_id=CLIENT_ID,
+               client_secret=CLIENT_SECRET
+               )
+
+hostname = "search-string"
+
+aid = falcon.query_devices_by_filter(
+                    filter=f"hostname:'{hostname}*'"
+                    )["body"]["resources"][0]
+
+print(aid)
+String syntax
+In our example above, we search the hostname property for the value of "search-string". To accomplish this, we defined the filter keyword as follows:
+
+
+property_name:'STRING_VALUE'
+Since we are performing a search where we want our attribute values to equal to our search string, we do not need to define an operator.
+
+We also wanted to perform a stemmed search, matching all hosts that might start with our search string, so we appended the wildcard character. Many FQL filters will automatically returned stemmed searches like this, but we forced this behavior by passing the wildcard character * at the end of our string.
+
+
+property_name:'STRING_VALUE*'
+Note: In some APIs, you may only have one wildcard character per FQL property present within a FQL statement.
+
+Exact matches
+If we had wanted to force an exact match to our search string, we could achieve this using square brackets.
+
+
+property_name:['STRING_VALUE']
+Note: Exact match searches are case sensitive.
+
+Date syntax
+Date values should be in UTC format and encapsulated in single quotes exactly like strings.
+
+
+property_name:[operator]'UTC_DATE_VALUE'
+Usage example
+This example returns a list of hosts that have not been seen since 12pm on August 31st, 2021.
+
+
+last_seen = "2021-08-31T12:00:00Z"
+
+returned = falcon.query_devices_by_filter(
+                    filter=f"last_seen:<='{last_seen}'"
+                    )
+Boolean syntax
+Boolean values should be provided in all lowercase without quotation marks.
+
+
+property_name:[operator]BOOLEAN_VALUE
+Usage example
+
+filter = "featured:true"
+Integer syntax
+Integer values should be provided without quotation marks.
+
+
+property_name:[operator]INTEGER_VALUE
+Usage example
+
+filter = "posts.count:>10"
+Filtering using multiple properties and conditions
+Additional constraints can be added to your query by appending more properties (and operators) to your filter string using the + or , characters.
+
+Character	Purpose
++	and
+,	or
+Usage example
+
+search = "search-string"
+result = falcon.query_devices_by_filter(
+            filter=f"hostname:'{search}'+platform_name:!'Linux'"
+            )
+Complex expressions
+More complicated expressions can be passed using the ( and ) characters.
+
+
+(hostname:'STRING'+platform_name:'Windows'),(hostname:!'OTHER_STRING'+platform_name:'Linux')
+Usage example
+This example retrieves all hosts with a hostname attribute starting with the letter "g". All hosts that do not have a hostname starting with "g2-" and are running Linux are also included. (or search)
+
+
+group_hosts = "g"
+group2_hosts = "g2-"
+filter_string = f"(hostname:'{group_hosts}*'),(hostname:!'{group2_hosts}*'+platform_name:'Linux')"
+results = falcon.query_devices_by_filter(
+            filter=filter_string
+            )
+Passing the filter keyword
+Since we're passing our filter as a keyword to a method that has a string data type, we need to encapsulate our filter in double quotes.
+
+
+filter="property_name:'STRING_VALUE*'"
+Everything else in our inital filter example above is just abstraction of the input and return values.
+
+
+search = "search-string"
+
+aid = falcon.query_devices_by_filter(
+                    filter=f"property_name:'{search}*'"
+                    )["body"]["resources"][0]
+Using FQL in a sort
+Falcon Query Language (FQL) can be used to sort results returned for some API operations. These sort expressions use the following syntax:
+
+
+<property_name>.<direction>
+Where direciton is either asc (ascending) or desc (descending).
+
+Some APIs also accept the pipe (|) character to separate property_name and direction.
+
+Example usage
+This example returns a list of host IDs, sorted ascending by hostname.
+
+
+from falconpy.hosts import Hosts
+
+falcon = Hosts(client_id=CLIENT_ID,
+               client_secret=CLIENT_SECRET
+               )
+
+returned = falcon.query_devices_by_filter(
+                    sort="hostname.asc"
+                    )
+
+print(returned)

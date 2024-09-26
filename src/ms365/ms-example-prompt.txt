@@ -1,0 +1,14 @@
+# Call this Microsoft 365 API to get a list of all alerts from the past month.
+# https://api-eu3.securitycenter.microsoft.com/api/machines
+
+#Import necessary libraries
+
+# Create the body for the POST request to get the token
+
+# Get the token
+
+# Define the API endpoint and headers
+
+# Make the API request
+
+# Output the response
